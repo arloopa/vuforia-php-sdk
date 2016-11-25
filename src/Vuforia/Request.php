@@ -11,7 +11,6 @@ use Vuforia\Exceptions\UnauthorizedException;
 
 class Request
 {
-
     /**
      * @var string
      */
@@ -29,6 +28,7 @@ class Request
 
     /**
      * Vuforia constructor.
+     *
      * @param string $access_key
      * @param string $secret_key
      */
@@ -39,10 +39,11 @@ class Request
     }
 
     /**
-     * Make a GET request to Vuforia
+     * Make a GET request to Vuforia.
      *
      * @param string $path
      * @param $body
+     *
      * @return ResponseInterface
      */
     public function get(string $path, $body = null) : ResponseInterface
@@ -51,10 +52,11 @@ class Request
     }
 
     /**
-     * Make a POST request to Vuforia
+     * Make a POST request to Vuforia.
      *
      * @param string $path
      * @param $body
+     *
      * @return ResponseInterface
      */
     public function post(string $path, $body = null) : ResponseInterface
@@ -63,10 +65,11 @@ class Request
     }
 
     /**
-     * Make a PUT request to Vuforia
+     * Make a PUT request to Vuforia.
      *
      * @param string $path
      * @param $body
+     *
      * @return ResponseInterface
      */
     public function put(string $path, $body = null) : ResponseInterface
@@ -75,10 +78,11 @@ class Request
     }
 
     /**
-     * Make a DELETE request to Vuforia
+     * Make a DELETE request to Vuforia.
      *
      * @param string $path
      * @param $body
+     *
      * @return ResponseInterface
      */
     public function delete(string $path, $body = null) : ResponseInterface
@@ -87,12 +91,14 @@ class Request
     }
 
     /**
-     * Call a request with Vuforia authorization parameters
+     * Call a request with Vuforia authorization parameters.
      *
      * @param string $method
      * @param string $path
      * @param string $body
+     *
      * @return ResponseInterface
+     *
      * @throws UnauthorizedException
      */
     private function call($method, string $path, $body = null):ResponseInterface
@@ -110,7 +116,7 @@ class Request
         $headers = [];
 
         $date = new DateTime('now', new DateTimeZone('GMT'));
-        $headers['Date'] = $date->format('D, d M Y H:i:s') . ' GMT';
+        $headers['Date'] = $date->format('D, d M Y H:i:s').' GMT';
 
         $headers['Content-Type'] = 'application/json';
 
@@ -130,7 +136,7 @@ class Request
     }
 
     /**
-     * Returns a new instance of signature builder
+     * Returns a new instance of signature builder.
      *
      * @return SignatureBuilder
      */
@@ -140,13 +146,12 @@ class Request
     }
 
     /**
-     * Return a single instance of guzzle client
+     * Return a single instance of guzzle client.
      *
      * @return GuzzleClient
      */
     private function guzzleClient(): GuzzleClient
     {
-
         if (is_null($this->guzzle_client)) {
             $this->guzzle_client = new GuzzleClient([
                 'verify' => false,

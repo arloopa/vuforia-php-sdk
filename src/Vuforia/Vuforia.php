@@ -6,14 +6,13 @@ use Vuforia\Services\TargetService;
 use Vuforia\Traits\Attributable;
 
 /**
- * Class Vuforia
- * @package Vuforia
+ * Class Vuforia.
+ *
  * @property-read TargetService $targets
  * @property-read Request $request
  */
 class Vuforia
 {
-
     use Attributable;
 
     /**
@@ -27,7 +26,7 @@ class Vuforia
     private $secret_key;
 
     /**
-     * Instance of target servcie
+     * Instance of target servcie.
      *
      * @var TargetService
      */
@@ -56,7 +55,7 @@ class Vuforia
     }
 
     /**
-     * Set the Vuforia config
+     * Set the Vuforia config.
      *
      * @param string $access_key
      * @param string $secret_key
@@ -69,7 +68,7 @@ class Vuforia
     }
 
     /**
-     * Returns the Vuforia instance
+     * Returns the Vuforia instance.
      *
      * @return Vuforia
      */
@@ -79,7 +78,7 @@ class Vuforia
     }
 
     /**
-     * Return a single instance of request
+     * Return a single instance of request.
      *
      * @return Request
      */
@@ -93,7 +92,7 @@ class Vuforia
     }
 
     /**
-     * Get targets
+     * Get targets.
      *
      * @return TargetService
      */

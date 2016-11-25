@@ -3,10 +3,8 @@
 namespace Vuforia\Services;
 
 /**
- * Class Service
- * @package Vuforia\Services
+ * Class Service.
  */
 abstract class Service
 {
-
 }

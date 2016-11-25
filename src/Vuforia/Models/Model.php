@@ -12,14 +12,14 @@ abstract class Model
     protected static $instances = [];
 
     /**
-     * Find instance of model
+     * Find instance of model.
      *
      * @param mixed $id
+     *
      * @return static
      */
     public static function find($id)
     {
-
         if (!array_key_exists($id, self::$instances)) {
             self::$instances[$id] = new static($id);
         }

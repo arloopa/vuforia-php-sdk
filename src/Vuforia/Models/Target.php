@@ -5,8 +5,7 @@ namespace Vuforia\Models;
 use Vuforia\Vuforia;
 
 /**
- * Class Target
- * @package Vuforia\Models
+ * Class Target.
  *
  * @property string $id
  * @property string $status
@@ -18,7 +17,6 @@ use Vuforia\Vuforia;
  */
 class Target extends Model
 {
-
     /**
      * @var string
      */
@@ -40,9 +38,10 @@ class Target extends Model
     }
 
     /**
-     * Returns the model attribute. If not exist, load it
+     * Returns the model attribute. If not exist, load it.
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function __get($name)
@@ -59,15 +58,16 @@ class Target extends Model
     }
 
     /**
-     * Set the model attributes
+     * Set the model attributes.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set($name, $value)
     {
         if ($name === 'id') {
             $this->id = $value;
+
             return;
         }
 
@@ -77,13 +77,14 @@ class Target extends Model
     }
 
     /**
-     * Updates the target
+     * Updates the target.
      *
      * @param string $marker_path
      * @param string $name
-     * @param int $width
+     * @param int    $width
      * @param string $metadata
-     * @param bool $is_active
+     * @param bool   $is_active
+     *
      * @return bool
      */
     public function update($marker_path = null, $name = null, $width = null, $metadata = null, $is_active = null) : bool
@@ -91,7 +92,7 @@ class Target extends Model
         $data = [];
 
         if (!is_null($marker_path)) {
-            $data['image'] = Target::encode_marker($marker_path);
+            $data['image'] = self::encode_marker($marker_path);
         }
 
         if (!is_null($name)) {
@@ -103,7 +104,7 @@ class Target extends Model
         }
 
         if (!is_null($metadata)) {
-            $data['application_metadata'] = Target::encode_metadata($metadata);
+            $data['application_metadata'] = self::encode_metadata($metadata);
         }
 
         if (!is_null($is_active)) {
@@ -114,9 +115,10 @@ class Target extends Model
     }
 
     /**
-     * Change name of the target
+     * Change name of the target.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function changeName(string $name)
@@ -125,9 +127,10 @@ class Target extends Model
     }
 
     /**
-     * Change marker of the target
+     * Change marker of the target.
      *
      * @param string $marker_path
+     *
      * @return bool
      */
     public function changeMarker(string $marker_path)
@@ -136,9 +139,10 @@ class Target extends Model
     }
 
     /**
-     * Change metadata of the target
+     * Change metadata of the target.
      *
      * @param string $metadata
+     *
      * @return bool
      */
     public function changeMetadata(string $metadata)
@@ -147,7 +151,7 @@ class Target extends Model
     }
 
     /**
-     * Make target inactive
+     * Make target inactive.
      *
      * @return bool
      */
@@ -157,7 +161,7 @@ class Target extends Model
     }
 
     /**
-     * Make target active
+     * Make target active.
      *
      * @return bool
      */
@@ -167,9 +171,10 @@ class Target extends Model
     }
 
     /**
-     * Change width of marker
+     * Change width of marker.
      *
      * @param int $width
+     *
      * @return bool
      */
     public function changeWidth(int $width)
@@ -178,7 +183,7 @@ class Target extends Model
     }
 
     /**
-     * Activates the target. Alias of makeActive
+     * Activates the target. Alias of makeActive.
      */
     public function activate()
     {
@@ -186,7 +191,7 @@ class Target extends Model
     }
 
     /**
-     * Returns all targets
+     * Returns all targets.
      *
      * @return Target[]
      */
@@ -196,13 +201,14 @@ class Target extends Model
     }
 
     /**
-     * Creates a new marker
+     * Creates a new marker.
      *
      * @param string $marker_path
      * @param string $name
-     * @param int $width
+     * @param int    $width
      * @param string $metadata
-     * @param bool $is_active
+     * @param bool   $is_active
+     *
      * @return Target
      */
     public static function create(string $marker_path, string $name, int $width, string $metadata, bool $is_active) : Target
@@ -210,16 +216,17 @@ class Target extends Model
         return Vuforia::instance()->targets->create([
             'width' => $width,
             'name' => $name,
-            'image' => Target::encode_marker($marker_path),
-            'application_metadata' => Target::encode_metadata($metadata),
-            'active_flag' => $is_active
+            'image' => self::encode_marker($marker_path),
+            'application_metadata' => self::encode_metadata($metadata),
+            'active_flag' => $is_active,
         ]);
     }
 
     /**
-     * Encodes the metadata
+     * Encodes the metadata.
      *
      * @param string $metadata
+     *
      * @return string
      */
     private static function encode_metadata(string $metadata) : string
@@ -228,9 +235,10 @@ class Target extends Model
     }
 
     /**
-     * Encodes the marker
+     * Encodes the marker.
      *
      * @param string $marker_path
+     *
      * @return string
      */
     private static function encode_marker(string $marker_path) : string
@@ -239,6 +247,7 @@ class Target extends Model
         if ($file) {
             return base64_encode($file);
         }
+
         return '';
     }
 }

@@ -7,21 +7,18 @@ use Vuforia\Vuforia;
 
 class TargetService extends Service
 {
-
     /**
-     * Return all targets
+     * Return all targets.
      *
      * @return Target[]
      */
     public function all()
     {
-
         $response = json_decode(Vuforia::instance()->request->get('targets')->getBody()->getContents());
 
         $targets = [];
 
         foreach ($response->results as $result) {
-
             $targets[] = new Target($result);
         }
 
@@ -29,14 +26,14 @@ class TargetService extends Service
     }
 
     /**
-     * Returns the target
+     * Returns the target.
      *
      * @param Target $target
+     *
      * @return Target
      */
     public function find(&$target)
     {
-
         if (!($target instanceof Target)) {
             $target = &Target::find($target);
         }
@@ -56,9 +53,10 @@ class TargetService extends Service
     }
 
     /**
-     * Creates a new target and returns the data
+     * Creates a new target and returns the data.
      *
      * @param array $data
+     *
      * @return Target
      */
     public function create(array $data) : Target
@@ -75,10 +73,11 @@ class TargetService extends Service
     }
 
     /**
-     * Updates the existing data
+     * Updates the existing data.
      *
      * @param string $target_id
-     * @param array $data
+     * @param array  $data
+     *
      * @return bool
      */
     public function update(string $target_id, array $data) : bool

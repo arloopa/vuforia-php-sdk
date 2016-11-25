@@ -5,12 +5,10 @@ namespace Vuforia;
 use Vuforia\Exceptions\SignatureBuilderException;
 
 /**
- * Class SignatureBuilder
- * @package Vuforia
+ * Class SignatureBuilder.
  */
 class SignatureBuilder
 {
-
     private $contentType = '';
     private $hexDigest = 'd41d8cd98f00b204e9800998ecf8427e'; // Hex digest of an empty string
 
@@ -26,6 +24,7 @@ class SignatureBuilder
 
     /**
      * Vuforia constructor.
+     *
      * @param string $access_key
      * @param string $secret_key
      */
@@ -36,18 +35,19 @@ class SignatureBuilder
     }
 
     /**
-     * Build a signature for given request params
+     * Build a signature for given request params.
      *
      * @param string $method
      * @param string $url
-     * @param array $headers
+     * @param array  $headers
      * @param string $body
+     *
      * @return string
+     *
      * @throws SignatureBuilderException
      */
     public function build(string $method, string $url, array $headers, $body = null):string
     {
-
         $method = strtoupper($method);
 
         // note that header names are converted to lower case
@@ -61,21 +61,18 @@ class SignatureBuilder
 
         if ($method == 'GET' || $method == 'DELETE') {
             // Do nothing because the strings are already set correctly
-        } else if ($method == 'POST' || $method == 'PUT') {
+        } elseif ($method == 'POST' || $method == 'PUT') {
             // If this is a POST or PUT the request should have a request body
             $this->hexDigest = md5($body, false);
-
         } else {
             throw new SignatureBuilderException('Invalid method passed to Signature Builder');
         }
-
 
         $toDigest = implode("\n", [$method, $this->hexDigest, $this->contentType, $date, $path]);
 
         try {
             // the SHA1 hash needs to be transformed from hexidecimal to Base64
-            $shaHashed = $this->hexToBase64(hash_hmac("sha1", $toDigest, $this->secret_key));
-
+            $shaHashed = $this->hexToBase64(hash_hmac('sha1', $toDigest, $this->secret_key));
         } catch (\Exception $e) {
             throw new SignatureBuilderException('Cannot generate signature.');
         }
@@ -84,17 +81,19 @@ class SignatureBuilder
     }
 
     /**
-     * Convert hex to base64
+     * Convert hex to base64.
      *
      * @param $hex
+     *
      * @return string
      */
     private function hexToBase64($hex)
     {
-        $return = "";
+        $return = '';
         foreach (str_split($hex, 2) as $pair) {
             $return .= chr(hexdec($pair));
         }
+
         return base64_encode($return);
     }
 }
