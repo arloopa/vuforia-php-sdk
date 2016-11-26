@@ -9,7 +9,7 @@ abstract class Model
     /**
      * @var static[]
      */
-    protected static $instances = [];
+    protected static $instances = array();
 
     /**
      * Find instance of model.

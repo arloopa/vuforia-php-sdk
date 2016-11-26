@@ -97,9 +97,9 @@ class Request
      * @param string $path
      * @param string $body
      *
-     * @return ResponseInterface
-     *
      * @throws UnauthorizedException
+     *
+     * @return ResponseInterface
      */
     private function call($method, string $path, $body = null):ResponseInterface
     {
@@ -113,7 +113,7 @@ class Request
         }
 
         // Build headers
-        $headers = [];
+        $headers = array();
 
         $date = new DateTime('now', new DateTimeZone('GMT'));
         $headers['Date'] = $date->format('D, d M Y H:i:s').' GMT';
@@ -153,9 +153,9 @@ class Request
     private function guzzleClient(): GuzzleClient
     {
         if (is_null($this->guzzle_client)) {
-            $this->guzzle_client = new GuzzleClient([
+            $this->guzzle_client = new GuzzleClient(array(
                 'verify' => false,
-            ]);
+            ));
         }
 
         return $this->guzzle_client;

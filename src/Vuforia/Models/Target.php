@@ -89,7 +89,7 @@ class Target extends Model
      */
     public function update($marker_path = null, $name = null, $width = null, $metadata = null, $is_active = null) : bool
     {
-        $data = [];
+        $data = array();
 
         if (!is_null($marker_path)) {
             $data['image'] = self::encode_marker($marker_path);
@@ -213,13 +213,13 @@ class Target extends Model
      */
     public static function create(string $marker_path, string $name, int $width, string $metadata, bool $is_active) : Target
     {
-        return Vuforia::instance()->targets->create([
+        return Vuforia::instance()->targets->create(array(
             'width' => $width,
             'name' => $name,
             'image' => self::encode_marker($marker_path),
             'application_metadata' => self::encode_metadata($metadata),
             'active_flag' => $is_active,
-        ]);
+        ));
     }
 
     /**

@@ -42,9 +42,9 @@ class SignatureBuilder
      * @param array  $headers
      * @param string $body
      *
-     * @return string
-     *
      * @throws SignatureBuilderException
+     *
+     * @return string
      */
     public function build(string $method, string $url, array $headers, $body = null):string
     {
@@ -68,7 +68,7 @@ class SignatureBuilder
             throw new SignatureBuilderException('Invalid method passed to Signature Builder');
         }
 
-        $toDigest = implode("\n", [$method, $this->hexDigest, $this->contentType, $date, $path]);
+        $toDigest = implode("\n", array($method, $this->hexDigest, $this->contentType, $date, $path));
 
         try {
             // the SHA1 hash needs to be transformed from hexidecimal to Base64
