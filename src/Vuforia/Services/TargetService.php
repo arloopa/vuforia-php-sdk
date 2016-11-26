@@ -16,7 +16,7 @@ class TargetService extends Service
     {
         $response = json_decode(Vuforia::instance()->request->get('targets')->getBody()->getContents());
 
-        $targets = [];
+        $targets = array();
 
         foreach ($response->results as $result) {
             $targets[] = new Target($result);
