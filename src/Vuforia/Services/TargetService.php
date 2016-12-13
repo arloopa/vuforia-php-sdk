@@ -59,7 +59,7 @@ class TargetService extends Service
      *
      * @return Target
      */
-    public function create(array $data) : Target
+    public function create(array $data): Target
     {
         $response = json_decode(
             Vuforia::instance()
@@ -80,11 +80,26 @@ class TargetService extends Service
      *
      * @return bool
      */
-    public function update(string $target_id, array $data) : bool
+    public function update(string $target_id, array $data): bool
     {
         return Vuforia::instance()
-            ->request
-            ->put("targets/{$target_id}", json_encode($data))
-            ->getStatusCode() === 200;
+                ->request
+                ->put("targets/{$target_id}", json_encode($data))
+                ->getStatusCode() === 200;
+    }
+
+    /**
+     * Deletes the target.
+     *
+     * @param string $target_id
+     *
+     * @return bool
+     */
+    public function delete(string $target_id)
+    {
+        return Vuforia::instance()
+                ->request
+                ->delete("targets/{$target_id}")
+                ->getStatusCode() === 200;
     }
 }

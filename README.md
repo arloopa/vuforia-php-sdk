@@ -39,6 +39,9 @@ $target->makeInactive();
 $target->makeActive();
 // or
 $target->activate();
+
+// To delete the target
+$target->delete();
 ```
 
 ## Installation

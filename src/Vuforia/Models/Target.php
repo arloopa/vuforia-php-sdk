@@ -87,7 +87,7 @@ class Target extends Model
      *
      * @return bool
      */
-    public function update($marker_path = null, $name = null, $width = null, $metadata = null, $is_active = null) : bool
+    public function update($marker_path = null, $name = null, $width = null, $metadata = null, $is_active = null): bool
     {
         $data = array();
 
@@ -191,6 +191,16 @@ class Target extends Model
     }
 
     /**
+     * Deletes the marker.
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+        return Vuforia::instance()->targets->delete($this->id);
+    }
+
+    /**
      * Returns all targets.
      *
      * @return Target[]
@@ -211,7 +221,7 @@ class Target extends Model
      *
      * @return Target
      */
-    public static function create(string $marker_path, string $name, int $width, string $metadata, bool $is_active) : Target
+    public static function create(string $marker_path, string $name, int $width, string $metadata, bool $is_active): Target
     {
         return Vuforia::instance()->targets->create(array(
             'width' => $width,
@@ -229,7 +239,7 @@ class Target extends Model
      *
      * @return string
      */
-    private static function encode_metadata(string $metadata) : string
+    private static function encode_metadata(string $metadata): string
     {
         return base64_encode($metadata);
     }
@@ -241,7 +251,7 @@ class Target extends Model
      *
      * @return string
      */
-    private static function encode_marker(string $marker_path) : string
+    private static function encode_marker(string $marker_path): string
     {
         $file = file_get_contents($marker_path);
         if ($file) {
