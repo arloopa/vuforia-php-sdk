@@ -22,7 +22,7 @@ abstract class Model
     {
         $class = get_called_class();
 
-        if (array_key_exists($class, static::$instances)) {
+        if (!array_key_exists($class, static::$instances)) {
             static::$instances[$class] = array();
         }
 
