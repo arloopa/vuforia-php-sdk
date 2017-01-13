@@ -7,9 +7,9 @@ abstract class Model
     protected $attributes;
 
     /**
-     * @var static[]
+     * @var static[][]
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Find instance of model.
@@ -20,10 +20,16 @@ abstract class Model
      */
     public static function find($id)
     {
-        if (!array_key_exists($id, self::$instances)) {
-            self::$instances[$id] = new static($id);
+        $class = get_called_class();
+
+        if (array_key_exists($class, static::$instances)) {
+            static::$instances[$class] = [];
         }
 
-        return self::$instances[$id];
+        if (!array_key_exists($id, static::$instances[$class])) {
+            static::$instances[$class][$id] = new static($id);
+        }
+
+        return static::$instances[$class][$id];
     }
 }

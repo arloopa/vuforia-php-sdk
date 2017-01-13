@@ -5,6 +5,9 @@ namespace Vuforia\Services;
 use Vuforia\Models\Target;
 use Vuforia\Vuforia;
 
+/**
+ * Class TargetService.
+ */
 class TargetService extends Service
 {
     /**

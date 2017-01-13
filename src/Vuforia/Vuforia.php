@@ -2,6 +2,7 @@
 
 namespace Vuforia;
 
+use Vuforia\Services\SummaryService;
 use Vuforia\Services\TargetService;
 use Vuforia\Traits\Attributable;
 
@@ -9,6 +10,7 @@ use Vuforia\Traits\Attributable;
  * Class Vuforia.
  *
  * @property-read TargetService $targets
+ * @property-read SummaryService $summaries
  * @property-read Request $request
  */
 class Vuforia
@@ -26,11 +28,18 @@ class Vuforia
     private $secret_key;
 
     /**
-     * Instance of target servcie.
+     * Instance of target service.
      *
      * @var TargetService
      */
     private $target_service;
+
+    /**
+     * Instance of summary service.
+     *
+     * @var SummaryService
+     */
+    private $summary_service;
 
     /**
      * @var Request
@@ -92,7 +101,7 @@ class Vuforia
     }
 
     /**
-     * Get targets.
+     * Get targets service.
      *
      * @return TargetService
      */
@@ -103,5 +112,19 @@ class Vuforia
         }
 
         return $this->target_service;
+    }
+
+    /**
+     * Get summaries service.
+     *
+     * @return SummaryService
+     */
+    public function getSummariesAttribute()
+    {
+        if (is_null($this->summary_service)) {
+            $this->summary_service = new SummaryService();
+        }
+
+        return $this->summary_service;
     }
 }

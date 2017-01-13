@@ -131,6 +131,7 @@ class Request
         try {
             return $this->guzzleClient()->send($request);
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
             throw new UnauthorizedException('Unauthorized');
         }
     }

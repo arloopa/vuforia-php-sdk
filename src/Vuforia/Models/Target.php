@@ -14,6 +14,7 @@ use Vuforia\Vuforia;
  * @property int $width
  * @property int $tracking_rating
  * @property string $reco_rating
+ * @property Summary $summary
  */
 class Target extends Model
 {
@@ -26,6 +27,11 @@ class Target extends Model
      * @var bool
      */
     private $is_loaded;
+
+    /**
+     * @var Summary
+     */
+    private $summary_instance;
 
     /**
      * Target constructor.
@@ -48,6 +54,14 @@ class Target extends Model
     {
         if ($name === 'id') {
             return $this->id;
+        }
+
+        if ($name === 'summary') {
+            if (is_null($this->summary_instance)) {
+                $this->summary_instance = Summary::find($this->id);
+            }
+
+            return $this->summary_instance;
         }
 
         if (!$this->is_loaded) {

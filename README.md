@@ -26,6 +26,26 @@ $targets = Target::all();
 // To get specified target
 $target = Target::find('target_id');
 
+// To get target info
+var_dump($target->id);
+var_dump($target->name);
+var_dump($target->active_flag);
+var_dump($target->tracking_rating);
+var_dump($target->status);
+var_dump($target->width);
+var_dump($target->reco_rating);
+
+// To get target summary
+var_dump($target->summary->database_name);
+var_dump($target->summary->target_name);
+var_dump($target->summary->upload_date);
+var_dump($target->summary->active_flag);
+var_dump($target->summary->status);
+var_dump($target->summary->tracking_rating);
+var_dump($target->summary->total_recos);
+var_dump($target->summary->current_month_recos);
+var_dump($target->summary->previous_month_recos);
+
 // To create a new target
 Target::create('marker image path (local or remote)', 'name of target', $width, 'metadata', $is_active);
 
