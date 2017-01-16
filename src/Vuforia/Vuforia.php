@@ -44,7 +44,7 @@ class Vuforia
     /**
      * @var Request[]
      */
-    private $request_instances = [];
+    private $request_instances = array();
 
     /**
      * @var Vuforia
