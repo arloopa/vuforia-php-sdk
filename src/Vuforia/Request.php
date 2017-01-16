@@ -7,6 +7,7 @@ use DateTimeZone;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Psr\Http\Message\ResponseInterface;
+use Vuforia\Exceptions\ResourceNotFoundException;
 use Vuforia\Exceptions\UnauthorizedException;
 
 class Request
@@ -131,8 +132,15 @@ class Request
         try {
             return $this->guzzleClient()->send($request);
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            throw new UnauthorizedException('Unauthorized');
+
+            if ($e->getCode() == 404) {
+                throw new ResourceNotFoundException("Your requested resource ({$method} {$url}) not found.");
+            }
+//            elseif ($e->getCode() == 403) {
+//                throw new UnauthorizedException($e->getMessage());
+//            }
+
+            throw new UnauthorizedException($e->getMessage());
         }
     }
 
