@@ -42,9 +42,9 @@ class Vuforia
     private $summary_service;
 
     /**
-     * @var Request
+     * @var Request[]
      */
-    private $request;
+    private $request_instances;
 
     /**
      * @var Vuforia
@@ -59,8 +59,7 @@ class Vuforia
      */
     private function __construct($access_key, $secret_key)
     {
-        $this->access_key = $access_key;
-        $this->secret_key = $secret_key;
+        $this->reconfigure($access_key, $secret_key);
     }
 
     /**
@@ -73,6 +72,9 @@ class Vuforia
     {
         if (is_null(self::$instance)) {
             self::$instance = new self($access_key, $secret_key);
+        }
+        else {
+            self::$instance->reconfigure($access_key, $secret_key);
         }
     }
 
@@ -93,11 +95,13 @@ class Vuforia
      */
     public function getRequestAttribute()
     {
-        if (is_null($this->request)) {
-            $this->request = new Request($this->access_key, $this->secret_key);
+        $hash = md5($this->access_key . $this->secret_key);
+
+        if (!array_key_exists($hash, $this->request_instances)) {
+            $this->request_instances[$hash] = new Request($this->access_key, $this->secret_key);
         }
 
-        return $this->request;
+        return $this->request_instances[$hash];
     }
 
     /**
@@ -126,5 +130,17 @@ class Vuforia
         }
 
         return $this->summary_service;
+    }
+
+    /**
+     * Reconfigures the Vuforia instance
+     *
+     * @param string $access_key
+     * @param string $secret_key
+     */
+    private function reconfigure($access_key, $secret_key)
+    {
+        $this->access_key = $access_key;
+        $this->secret_key = $secret_key;
     }
 }

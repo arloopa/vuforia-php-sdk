@@ -140,7 +140,7 @@ class Request
 //                throw new UnauthorizedException($e->getMessage());
 //            }
 
-            throw new UnauthorizedException($e->getMessage());
+            throw new UnauthorizedException($e->getMessage(), $e->getCode());
         }
     }
 
