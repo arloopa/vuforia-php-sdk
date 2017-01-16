@@ -72,8 +72,7 @@ class Vuforia
     {
         if (is_null(self::$instance)) {
             self::$instance = new self($access_key, $secret_key);
-        }
-        else {
+        } else {
             self::$instance->reconfigure($access_key, $secret_key);
         }
     }
@@ -95,7 +94,7 @@ class Vuforia
      */
     public function getRequestAttribute()
     {
-        $hash = md5($this->access_key . $this->secret_key);
+        $hash = md5($this->access_key.$this->secret_key);
 
         if (!array_key_exists($hash, $this->request_instances)) {
             $this->request_instances[$hash] = new Request($this->access_key, $this->secret_key);
