@@ -132,7 +132,6 @@ class Request
         try {
             return $this->guzzleClient()->send($request);
         } catch (\Exception $e) {
-
             if ($e->getCode() == 404) {
                 throw new ResourceNotFoundException("Your requested resource ({$method} {$url}) not found.");
             }
