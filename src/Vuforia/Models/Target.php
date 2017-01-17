@@ -205,6 +205,16 @@ class Target extends Model
     }
 
     /**
+     * Retrieves the current target duplicates
+     *
+     * @return Target[]
+     */
+    public function getDuplicates() {
+
+        return Vuforia::instance()->targets->duplicates($this->id);
+    }
+
+    /**
      * Deletes the marker.
      *
      * @return bool

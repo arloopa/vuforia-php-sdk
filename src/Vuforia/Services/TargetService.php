@@ -79,7 +79,7 @@ class TargetService extends Service
      * Updates the existing data.
      *
      * @param string $target_id
-     * @param array  $data
+     * @param array $data
      *
      * @return bool
      */
@@ -104,5 +104,31 @@ class TargetService extends Service
                 ->request
                 ->delete("targets/{$target_id}")
                 ->getStatusCode() === 200;
+    }
+
+    /**
+     * Retrieves duplicate targets
+     *
+     * @param string $target_id
+     * @return Target[]
+     */
+    public function duplicates(string $target_id)
+    {
+        $response = Vuforia::instance()
+            ->request
+            ->get("duplicates/{$target_id}")
+            ->getBody()
+            ->getContents();
+
+        $response = json_decode($response);
+
+        $similar_target_ids = $response->similar_targets;
+        $similar_targets = array();
+
+        foreach ($similar_target_ids as $similar_target_id) {
+            $similar_targets[] = &Target::find($similar_target_id);
+        }
+
+        return $similar_targets;
     }
 }
