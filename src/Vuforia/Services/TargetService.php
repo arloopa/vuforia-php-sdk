@@ -79,7 +79,7 @@ class TargetService extends Service
      * Updates the existing data.
      *
      * @param string $target_id
-     * @param array $data
+     * @param array  $data
      *
      * @return bool
      */
@@ -110,6 +110,7 @@ class TargetService extends Service
      * Retrieves duplicate targets
      *
      * @param string $target_id
+     *
      * @return Target[]
      */
     public function duplicates(string $target_id)

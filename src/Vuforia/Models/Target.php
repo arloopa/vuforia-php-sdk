@@ -209,8 +209,8 @@ class Target extends Model
      *
      * @return Target[]
      */
-    public function getDuplicates() {
-
+    public function getDuplicates()
+    {
         return Vuforia::instance()->targets->duplicates($this->id);
     }
 
