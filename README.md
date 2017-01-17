@@ -26,6 +26,9 @@ $targets = Target::all();
 // To get specified target
 $target = Target::find('target_id');
 
+// To get target duplicates
+$target_duplicates = $target->getDuplicates();
+
 // To get target info
 var_dump($target->id);
 var_dump($target->name);
