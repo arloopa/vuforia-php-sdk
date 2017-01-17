@@ -2,6 +2,11 @@
 
 namespace Vuforia\Exceptions;
 
-class UnauthorizedException extends \Exception
+/**
+ * Class UnauthorizedException
+ * @package Vuforia\Exceptions
+ * @deprecated
+ */
+class UnauthorizedException extends AuthenticationFailureException
 {
 }

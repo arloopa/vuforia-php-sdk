@@ -5,10 +5,19 @@ namespace Vuforia;
 use DateTime;
 use DateTimeZone;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Psr\Http\Message\ResponseInterface;
-use Vuforia\Exceptions\ResourceNotFoundException;
-use Vuforia\Exceptions\UnauthorizedException;
+use Vuforia\Exceptions\AuthenticationFailureException;
+use Vuforia\Exceptions\BadImageException;
+use Vuforia\Exceptions\DateRangeErrorException;
+use Vuforia\Exceptions\ImageTooLargeException;
+use Vuforia\Exceptions\InternalServerException;
+use Vuforia\Exceptions\MetadataTooLargeException;
+use Vuforia\Exceptions\RequestQuotaReachedException;
+use Vuforia\Exceptions\RequestTimeTooSkewedException;
+use Vuforia\Exceptions\TargetNameExistException;
+use Vuforia\Exceptions\UnknownTargetException;
 
 class Request
 {
@@ -47,7 +56,7 @@ class Request
      *
      * @return ResponseInterface
      */
-    public function get(string $path, $body = null) : ResponseInterface
+    public function get(string $path, $body = null): ResponseInterface
     {
         return $this->call('GET', $path, $body);
     }
@@ -60,7 +69,7 @@ class Request
      *
      * @return ResponseInterface
      */
-    public function post(string $path, $body = null) : ResponseInterface
+    public function post(string $path, $body = null): ResponseInterface
     {
         return $this->call('POST', $path, $body);
     }
@@ -73,7 +82,7 @@ class Request
      *
      * @return ResponseInterface
      */
-    public function put(string $path, $body = null) : ResponseInterface
+    public function put(string $path, $body = null): ResponseInterface
     {
         return $this->call('PUT', $path, $body);
     }
@@ -86,7 +95,7 @@ class Request
      *
      * @return ResponseInterface
      */
-    public function delete(string $path, $body = null) : ResponseInterface
+    public function delete(string $path, $body = null): ResponseInterface
     {
         return $this->call('DELETE', $path, $body);
     }
@@ -97,12 +106,19 @@ class Request
      * @param string $method
      * @param string $path
      * @param string $body
-     *
-     * @throws UnauthorizedException
-     *
      * @return ResponseInterface
+     * @throws AuthenticationFailureException
+     * @throws BadImageException
+     * @throws DateRangeErrorException
+     * @throws ImageTooLargeException
+     * @throws InternalServerException
+     * @throws MetadataTooLargeException
+     * @throws RequestQuotaReachedException
+     * @throws RequestTimeTooSkewedException
+     * @throws TargetNameExistException
+     * @throws UnknownTargetException
      */
-    private function call($method, string $path, $body = null):ResponseInterface
+    private function call($method, string $path, $body = null): ResponseInterface
     {
         // Clear path and build url
         $path = trim($path, " \t\n\r\0\x0B\\/");
@@ -117,7 +133,7 @@ class Request
         $headers = array();
 
         $date = new DateTime('now', new DateTimeZone('GMT'));
-        $headers['Date'] = $date->format('D, d M Y H:i:s').' GMT';
+        $headers['Date'] = $date->format('D, d M Y H:i:s') . ' GMT';
 
         $headers['Content-Type'] = 'application/json';
 
@@ -131,15 +147,41 @@ class Request
 
         try {
             return $this->guzzleClient()->send($request);
-        } catch (\Exception $e) {
-            if ($e->getCode() == 404) {
-                throw new ResourceNotFoundException("Your requested resource ({$method} {$url}) not found.");
-            }
-//            elseif ($e->getCode() == 403) {
-//                throw new UnauthorizedException($e->getMessage());
-//            }
+        } catch (ClientException $e) {
 
-            throw new UnauthorizedException($e->getMessage(), $e->getCode());
+            $response = json_decode($e->getResponse()->getBody()->getContents());
+
+            switch ($response->result_code) {
+                case 'AuthenticationFailure':
+                    throw new AuthenticationFailureException('Signature authentication failed', 401);
+                    break;
+                case 'RequestTimeTooSkewed':
+                    throw new RequestTimeTooSkewedException('Request timestamp outside allowed range', 403);
+                    break;
+                case 'TargetNameExist':
+                    throw new TargetNameExistException('The corresponding target name already exists', 403);
+                    break;
+                case 'RequestQuotaReached':
+                    throw new RequestQuotaReachedException('Your request quota is reached', 403);
+                    break;
+                case 'UnknownTarget':
+                    throw new UnknownTargetException('The specified target ID does not exist', 404);
+                    break;
+                case 'BadImage':
+                    throw new BadImageException('Image corrupted or format not supported', 422);
+                    break;
+                case 'ImageTooLarge':
+                    throw new ImageTooLargeException('Target metadata size exceeds maximum limit', 422);
+                    break;
+                case 'MetadataTooLarge':
+                    throw new MetadataTooLargeException('Image size exceeds maximum limit', 422);
+                    break;
+                case 'DateRangeError':
+                    throw new DateRangeErrorException('Start date is after the end date', 422);
+                    break;
+                default:
+                    throw new InternalServerException('The server encountered an internal error; please retry the request', 500);
+            }
         }
     }
 
@@ -148,7 +190,7 @@ class Request
      *
      * @return SignatureBuilder
      */
-    private function signatureBuilder() : SignatureBuilder
+    private function signatureBuilder(): SignatureBuilder
     {
         return new SignatureBuilder($this->access_key, $this->secret_key);
     }
