@@ -76,7 +76,7 @@ class Target extends Model
      * Set the model attributes.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set($name, $value)
     {
@@ -96,9 +96,9 @@ class Target extends Model
      *
      * @param string $marker_path
      * @param string $name
-     * @param int $width
+     * @param int    $width
      * @param string $metadata
-     * @param bool $is_active
+     * @param bool   $is_active
      *
      * @return bool
      */
@@ -217,8 +217,10 @@ class Target extends Model
 
     /**
      * Checks if target have any duplicates and throws an exception else
-     * @return Target
+     *
      * @throws DuplicateTargetException
+     *
+     * @return Target
      */
     public function forceUnique()
     {
@@ -254,9 +256,9 @@ class Target extends Model
      *
      * @param string $marker_path
      * @param string $name
-     * @param int $width
+     * @param int    $width
      * @param string $metadata
-     * @param bool $is_active
+     * @param bool   $is_active
      *
      * @return Target
      */
