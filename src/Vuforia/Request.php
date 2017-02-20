@@ -107,7 +107,7 @@ class Request
      * @param string $method
      * @param string $path
      * @param string $body
-     * @return ResponseInterface
+     *
      * @throws AuthenticationFailureException
      * @throws BadImageException
      * @throws DateRangeErrorException
@@ -119,6 +119,8 @@ class Request
      * @throws TargetNameExistException
      * @throws TargetStatusProcessingException
      * @throws UnknownTargetException
+     *
+     * @return ResponseInterface
      */
     private function call($method, string $path, $body = null): ResponseInterface
     {
@@ -135,7 +137,7 @@ class Request
         $headers = array();
 
         $date = new DateTime('now', new DateTimeZone('GMT'));
-        $headers['Date'] = $date->format('D, d M Y H:i:s') . ' GMT';
+        $headers['Date'] = $date->format('D, d M Y H:i:s').' GMT';
 
         $headers['Content-Type'] = 'application/json';
 
