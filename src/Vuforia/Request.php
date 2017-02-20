@@ -17,6 +17,7 @@ use Vuforia\Exceptions\MetadataTooLargeException;
 use Vuforia\Exceptions\RequestQuotaReachedException;
 use Vuforia\Exceptions\RequestTimeTooSkewedException;
 use Vuforia\Exceptions\TargetNameExistException;
+use Vuforia\Exceptions\TargetStatusProcessingException;
 use Vuforia\Exceptions\UnknownTargetException;
 
 class Request
@@ -106,7 +107,7 @@ class Request
      * @param string $method
      * @param string $path
      * @param string $body
-     *
+     * @return ResponseInterface
      * @throws AuthenticationFailureException
      * @throws BadImageException
      * @throws DateRangeErrorException
@@ -116,9 +117,8 @@ class Request
      * @throws RequestQuotaReachedException
      * @throws RequestTimeTooSkewedException
      * @throws TargetNameExistException
+     * @throws TargetStatusProcessingException
      * @throws UnknownTargetException
-     *
-     * @return ResponseInterface
      */
     private function call($method, string $path, $body = null): ResponseInterface
     {
@@ -135,7 +135,7 @@ class Request
         $headers = array();
 
         $date = new DateTime('now', new DateTimeZone('GMT'));
-        $headers['Date'] = $date->format('D, d M Y H:i:s').' GMT';
+        $headers['Date'] = $date->format('D, d M Y H:i:s') . ' GMT';
 
         $headers['Content-Type'] = 'application/json';
 
@@ -179,6 +179,12 @@ class Request
                     break;
                 case 'DateRangeError':
                     throw new DateRangeErrorException('Start date is after the end date', 422);
+                    break;
+                case 'TargetStatusProcessing':
+                    throw new TargetStatusProcessingException(
+                        'The target is not processed yet. Please repeat the request after few minutes.',
+                        422
+                    );
                     break;
                 default:
                     throw new InternalServerException('The server encountered an internal error; please retry the request', 500);

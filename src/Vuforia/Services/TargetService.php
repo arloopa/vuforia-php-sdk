@@ -127,7 +127,7 @@ class TargetService extends Service
         $similar_targets = array();
 
         foreach ($similar_target_ids as $similar_target_id) {
-            $similar_targets[] = &Target::find($similar_target_id);
+            $similar_targets[] = Target::find($similar_target_id);
         }
 
         return $similar_targets;
